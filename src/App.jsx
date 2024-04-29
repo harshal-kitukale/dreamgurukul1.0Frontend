@@ -1,18 +1,16 @@
-
-import './App.css'
-import AllRoutes from './Routes/AllRoutes'
-import Sidebar from './components/Sidebar'
-import Products from './pages/Products'
-
+import "./App.css";
+import AllRoutes from "./Routes/AllRoutes";
+import Navbar from "./components/Navbar";
+import Sidebar from "./components/Sidebar";
+import Products from "./pages/Products";
 
 function App() {
-
   return (
-//  <AllRoutes/>
-// {/* <Sidebar/> */}
-<Products/>
-
-  )
+    <>
+      <Navbar />
+      <Products />
+    </>
+  );
 }
 
-export default App
+export default App;

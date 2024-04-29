@@ -47,11 +47,11 @@ export const editData = (payloadObj, id) => (dispatch) => {
 };
 
 // get api request
-export const getData =()=> (dispatch) => {
+export const getData =(paramObj)=> (dispatch) => {
   dispatch(LoadingAction());
-
+  
   axios
-    .get(`${apiUrl}/products/getProducts`)
+    .get(`${apiUrl}/products/getProducts`,{params:paramObj})
     .then((res) => {
         console.log(res.data.products,"dattt");
       dispatch(getSuccessAction(res.data.products));

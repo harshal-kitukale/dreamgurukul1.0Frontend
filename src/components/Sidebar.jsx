@@ -22,9 +22,9 @@ const Sidebar = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [isOpen, setIsOpen] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
-  const [sortByPrice, setSortByPrice] = useState(searchParams.get("sortBy") || "");
-  const [filtersByName, setFiltersByName] = useState(searchParams.get("filtersByName")||[]);
-  console.log((filtersByName));
+  const [sortByPrice, setSortByPrice] = useState(searchParams.get("sortByPrice")||"");
+  const [filterByName, setFilterByName] = useState(searchParams.getAll("filterByName")||[]);
+  
   const productsNames=[
     "Iola Mays",
     "Amity Alexander",
@@ -36,18 +36,19 @@ const Sidebar = () => {
   };
 
   const handleSortByPriceChange = (value) => {
+
     setSortByPrice(value);
-    setSearchParams({ sortBy: value });
+    // setSearchParams({ sortBy: value });
   };
 
-  const handleFiltersByNameChange = (e) => {
+  const handleFilterByNameChange = (e) => {
       //  console.log(e.target);
     if (e.target.checked) {
-      setFiltersByName([...filtersByName, e.target.value]);
+      setFilterByName([...filterByName, e.target.value]);
     } else {
-      setFiltersByName(filtersByName.filter((item) => item !== e.target.value));
+      setFilterByName(filterByName.filter((item) => item !== e.target.value));
     }
-    setSearchParams(filtersByName)
+    
   };
 
   const handleToggleSidebar = () => {
@@ -56,8 +57,9 @@ const Sidebar = () => {
 
   useEffect(() => {
     window.addEventListener('resize', handleResize);
+    setSearchParams({sortByPrice,filterByName})
     return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  }, [sortByPrice,filterByName]);
 
   return (
     <Box position="sticky" top="0" left="0" bottom="0" zIndex={10} boxShadow="lg">
@@ -67,16 +69,16 @@ const Sidebar = () => {
           <VStack spacing={4} p={4}>
             <Text fontWeight="bold">Sort by Price</Text>
             <RadioGroup onChange={handleSortByPriceChange} value={sortByPrice}>
-              <VStack>
+              <VStack >
                 <Radio value="lowToHigh">Low to High</Radio>
                 <Radio value="highToLow">High to Low</Radio>
               </VStack>
             </RadioGroup>
             <Text fontWeight="bold">Filters by Name</Text>
-            <CheckboxGroup  value={filtersByName}>
-              <VStack>
+            <CheckboxGroup  value={filterByName}>
+              <VStack alignItems={"flex-start"}>
                 {productsNames.map((name,i)=>(
-                  <Checkbox  key={i} value={name} checked={filtersByName.includes(name) ? true : false } onChange={handleFiltersByNameChange}>{name}</Checkbox>
+                  <Checkbox  key={i} value={name} checked={filterByName.includes(name) ? true : false } onChange={handleFilterByNameChange}>{name}</Checkbox>
                 ))}
               </VStack>
             </CheckboxGroup>
@@ -112,7 +114,7 @@ const Sidebar = () => {
                   </VStack>
                 </RadioGroup>
                 <Text fontWeight="bold">Filters by Name</Text>
-                <CheckboxGroup onChange={handleFiltersByNameChange} value={filtersByName}>
+                <CheckboxGroup onChange={handleFilterByNameChange} value={filterByName}>
                   <VStack>
                     <Checkbox value="Iola Mays">Iola Mays</Checkbox>
                     <Checkbox value="Amity Alexander">Amity Alexander</Checkbox>
